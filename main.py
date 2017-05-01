@@ -22,8 +22,8 @@ import copy
 
 import Grid
 
-def solve_borders(all_blocks):
-	emptygrid = Grid.Grid(20,20, all_blocks)
+def solve_borders(all_blocks, length, width):
+	emptygrid = Grid.Grid(length, width, all_blocks)
 	worlds = [emptygrid]
 	complete_worlds = []
 
@@ -96,11 +96,13 @@ def check_mirrors(worlds):
 if __name__ == '__main__':
 	# initializing the blocks
 	# set_of_blocks = [[1,1],[2,2],[4,4], [3,3], [5,5], [2,8], [1,1]]
-	set_of_blocks = [[[1,1], [1,1]], [[8,8], [8,8]], [[9,9], [9,9]], [[4,4],[4,4]], [[5,5], [5,5], [5,5]], [[6,6], [6,6], [6,6]]]
+	set_of_blocks = [[[1,1], [1,1]], [[8,8], [8,8]], [[9,9], [9,9]],
+	 [[4,4],[4,4]], [[5,5], [5,5], [5,5]], [[6,6], [6,6], [6,6]]]
+
 	# set_of_blocks = [[1,1]]*5
 	# set_of_blocks.append([[2,2]]*5)
 	# print(set_of_blocks)
-	[no_solutions, solutions] = solve_borders(set_of_blocks)
+	[no_solutions, solutions] = solve_borders(set_of_blocks, 14, 14)
 	print(no_solutions)
 	print(solutions)
 	print('no of non-solutions: ', len(no_solutions))

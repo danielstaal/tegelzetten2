@@ -18,21 +18,42 @@ class Grid:
 
 		self.side = 0
 
-	def add_block(self, tries):
+	def place_first_block(self, first_block, index):
+		x = 0
+		y = index
+		x2 = first_block[0]
+		y2 = y + first_block[1]
+
+		self.update_grid(x, x2, y, y2, first_block)
+
+	def add_block(self, block_no):
 		new_worlds = []
 		complete_worlds = []
 
-		# TODO: FIX PROBABLY PROBLEM WITH INDEXING OF TRIES
-
-		for i in range(tries, self.no_of_different_blocks):
+		# print(block_no)
+		# print(self.no_of_different_blocks)
+		# print('from', block_no, 'to', self.no_of_different_blocks)
+		# amount of blocks to skip
+		skip = 0
+		for i in range(block_no, self.no_of_different_blocks):
 			# check if not out of bounds because of removing a list in
 			# place_in_grid and decreasing self.no_of_different_blocks
-			if i < self.no_of_different_blocks:
-				# print(self.blocks)
-				flag = self.place_in_grid(self.blocks[i][0], i)
-				if flag == 0 or flag == 1:
-					return flag
-		return 2
+
+			# print(self.blocks)
+			# print(self.blocks[i][0])
+			flag = self.place_in_grid(self.blocks[i][0], i)
+			if flag == 0 or flag == 1:
+				# remove empty lists
+				self.blocks = [x for x in self.blocks if x != []]
+				self.no_of_different_blocks = len(self.blocks)
+				# print('block placed')
+				# print('skip', skip)
+				# print('flag', flag)
+				return flag, skip
+			else:
+				skip += 1
+				# print('block failed')
+		return 2, 0
 
 	def place_in_grid(self, block, i):
 		x = self.current_location[0]
@@ -57,16 +78,14 @@ class Grid:
 				return 2
 			# block succesfully put in grid then:
 			else:
-				if len(self.blocks[i]) == 1:
-					del self.blocks[i]
-					self.no_of_different_blocks -= 1
-				else:
-					self.blocks[i].remove(block)
-					self.no_of_blocks -= 1
+				# if len(self.blocks[i]) == 1:
+					# del self.blocks[i]
+					# self.no_of_different_blocks -= 1
+				# else:
+				self.blocks[i].remove(block)
+				self.no_of_blocks -= 1
 				# and always update
 				return self.update_current_location()
-		# else:
-			# print("out of grid")
 
 	def update_grid(self, x, x2, y, y2, block):
 		# check overlap
